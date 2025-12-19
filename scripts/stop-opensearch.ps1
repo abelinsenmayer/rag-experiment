@@ -1,4 +1,4 @@
-# Stop and destroy OpenSearch cluster using docker compose
+# Stop OpenSearch cluster using docker compose (preserves volumes)
 Write-Host "Stopping OpenSearch cluster..."
 
 # Get the directory where this script is located
@@ -6,6 +6,6 @@ $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $DockerComposeDir = Join-Path $ScriptDir "..\opensearch-cluster"
 
 Set-Location $DockerComposeDir
-docker compose down -v
+docker compose down
 
-Write-Host "OpenSearch cluster stopped and volumes removed."
+Write-Host "OpenSearch cluster stopped. Volumes preserved."
