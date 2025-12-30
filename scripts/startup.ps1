@@ -32,6 +32,7 @@ if ($LASTEXITCODE -ne 0) {
     Write-Host "Stopping OpenSearch cluster..."
     $StopScript = Join-Path $ScriptDir "stop-opensearch.ps1"
     & $StopScript
+    # Write-Host "Did not stop OpenSearch for debugging purposes..."
     exit 1
 }
 
