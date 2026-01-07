@@ -50,9 +50,14 @@ def setup_opensearch_indexes(host: str = "localhost", port: int = 9200):
         # Step 2: Register and deploy the embedding model
         model_id = register_and_deploy_model_separately(client)
         
-        # Store model ID in environment variable
+        # Store model ID in a file for persistence across processes
+        model_id_file = os.path.join(os.path.dirname(os.path.dirname(__file__)), '.opensearch_model_id')
+        with open(model_id_file, 'w') as f:
+            f.write(model_id)
+        print(f"Model ID stored in file: {model_id}")
+        
+        # Also set in current process environment for immediate use
         os.environ['OPENSEARCH_MODEL_ID'] = model_id
-        print(f"Model ID stored in environment variable: {model_id}")
         
         # Step 3: Create the ingest pipeline
         create_ingest_pipeline(client, model_id)

@@ -42,10 +42,18 @@ def search_wikipedia_articles(client, query_text: str, k: int = 5, size: int = 5
     Returns:
         Search results from OpenSearch
     """
-    # Get model ID from environment variable
+    # Get model ID from file or environment variable
     model_id = os.environ.get('OPENSEARCH_MODEL_ID')
+    
     if not model_id:
-        raise ValueError("OPENSEARCH_MODEL_ID environment variable not set. Please run opensearch_setup.py first.")
+        # Try reading from file
+        model_id_file = os.path.join(os.path.dirname(os.path.dirname(__file__)), '.opensearch_model_id')
+        if os.path.exists(model_id_file):
+            with open(model_id_file, 'r') as f:
+                model_id = f.read().strip()
+        
+    if not model_id:
+        raise ValueError("Model ID not found. Please run opensearch_setup.py first to configure the embedding model.")
     
     # Build the neural search query
     search_query = {
